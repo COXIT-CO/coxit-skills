@@ -33,6 +33,7 @@ Anything that isn't obvious from the code: trade-offs considered, migrations req
 Include the checklist and tick the boxes the PR satisfies. Keep only the lines that apply to the project's stack; drop the rest.
 
 - [ ] Base branch is set to `main`
+- [ ] Opened as a draft PR first; converted to ready-for-review only after self-review and green CI
 - [ ] Pull request is prepared: assignee added, reviewers added, linked to issue
 - [ ] Version is bumped if the project uses versioning
   - Python: `uvx bump-my-version bump patch/minor/major`
@@ -58,6 +59,7 @@ Include the checklist and tick the boxes the PR satisfies. Keep only the lines t
 
 ## Guidance
 
+- **Always open as a draft first.** Create the PR with `gh pr create --draft` (or the "Create draft pull request" option in the UI). Self-review the diff, wait for CI, then mark it ready. This avoids pinging reviewers on a PR that's still cooking.
 - **Be honest on the checklist.** Don't tick *Tested manually* if you haven't. An unchecked box is a signal to the reviewer, not a failure.
 - **Size flag.** If the PR is over ~400 lines of real change, either split it or explicitly justify the size in *What else do you need to know?*
 - **Adapt to the stack.** Don't leave Python-specific items in a JS PR (or vice versa) — drop lines that don't apply to keep the checklist meaningful.
