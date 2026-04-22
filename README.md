@@ -6,6 +6,8 @@ Collection of SKILL files we find helpful at Coxit for engineering, HR, recruitm
 
 Each folder in this repo is one skill — a short `SKILL.md` file that tells Claude how to do a specific task (review a candidate CV, draft an outreach email, run a performance review, review code, etc.). To use one, you load it into Claude and then ask Claude to use it.
 
+The `SKILL.md` format is an open standard (plain Markdown + YAML), so these files also work with other AI assistants — the instructions below focus on Claude because that's what most of us use.
+
 How you load it depends on which Claude app you use. **You don't need to be a developer** — the first option below works entirely in your browser.
 
 ### Option A — Claude.ai (web or desktop app)
