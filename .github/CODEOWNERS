@@ -1,0 +1,29 @@
+# CODEOWNERS for coxit-skills
+# Lines are matched in order; the last matching pattern wins.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-security/customizing-your-repository/about-code-owners
+
+# Default owners for everything
+*                                   @iramykytyn, @spcoxit
+
+# Top-level docs
+/README.md                          @iramykytyn, @spcoxit
+/CONTRIBUTING.md                    @iramykytyn, @spcoxit
+
+# Company-wide
+/company-wide/                      @iramykytyn, @spcoxit
+
+# Leadership
+/c-level/                           @iramykytyn, @spcoxit
+
+# HR & Recruitment
+/hr/                                @iramykytyn
+/recruitment/                       @iramykytyn
+
+# Engineering
+/engineering/                       @iramykytyn
+
+# Sales
+/sales/                             @iramykytyn
+
+# CI / repo configuration
+/.github/                           @iramykytyn, @spcoxit

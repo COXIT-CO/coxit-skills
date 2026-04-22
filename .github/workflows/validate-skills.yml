@@ -1,0 +1,56 @@
+name: Validate skills
+
+on:
+  pull_request:
+    paths:
+      - "**/SKILL.md"
+      - ".github/workflows/validate-skills.yml"
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate SKILL.md format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check every skill folder has a SKILL.md
+        run: |
+          set -e
+          missing=0
+          for dir in company-wide/*/ c-level/*/ hr/*/ recruitment/*/ engineering/*/ sales/*/; do
+            [ -d "$dir" ] || continue
+            if [ ! -f "${dir}SKILL.md" ]; then
+              echo "::error file=${dir}::Missing SKILL.md in ${dir}"
+              missing=1
+            fi
+          done
+          exit $missing
+
+      - name: Check SKILL.md frontmatter
+        run: |
+          set -e
+          fail=0
+          while IFS= read -r -d '' file; do
+            first_line=$(head -n 1 "$file")
+            if [ "$first_line" != "---" ]; then
+              echo "::error file=${file}::SKILL.md must start with YAML frontmatter (---)"
+              fail=1
+              continue
+            fi
+            if ! grep -q "^name:" "$file"; then
+              echo "::error file=${file}::Missing 'name:' in frontmatter"
+              fail=1
+            fi
+            if ! grep -q "^description:" "$file"; then
+              echo "::error file=${file}::Missing 'description:' in frontmatter"
+              fail=1
+            fi
+          done < <(find . -name SKILL.md -not -path "./node_modules/*" -print0)
+          exit $fail
+
+      - name: Report refinement status
+        if: always()
+        run: ./scripts/skill-status.sh --markdown >> "$GITHUB_STEP_SUMMARY"
