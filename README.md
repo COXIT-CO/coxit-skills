@@ -2,6 +2,49 @@
 
 Collection of SKILL files we find helpful at Coxit for engineering, HR, recruitment, and other departments.
 
+## How to use a skill
+
+Each folder in this repo is one skill — a short `SKILL.md` file that tells Claude how to do a specific task (review a candidate CV, draft an outreach email, run a performance review, review code, etc.). To use one, you load it into Claude and then ask Claude to use it.
+
+How you load it depends on which Claude app you use. **You don't need to be a developer** — the first option below works entirely in your browser.
+
+### Option A — Claude.ai (web or desktop app)
+
+Best for recruiters, HR, sales, leadership — anyone who doesn't work in a terminal.
+
+1. On GitHub, open the skill you want (e.g. [recruitment/outreach-messages/SKILL.md](recruitment/outreach-messages/SKILL.md)).
+2. Click the **Copy raw file** button in the top-right of the file view. This copies the full skill content.
+3. In [claude.ai](https://claude.ai), pick one of these:
+   - **One-off use:** start a new chat, paste the skill content as your first message, then add your request below it (e.g. *"Using the skill above, draft an outreach message for a senior backend engineer in Lisbon"*).
+   - **Ongoing use:** create a **Project** (left sidebar → **Projects** → **Create project**), click **Add instructions / Project knowledge**, and paste the skill content there. Every chat inside that project will follow the skill automatically.
+
+Tip: if a skill references other files in its folder (templates, checklists), copy those in too — either append them to your message or add them as project files.
+
+### Option B — Claude Code (CLI), personal use
+
+Best for engineers who want a skill available across all their own work.
+
+1. Clone this repo: `git clone https://github.com/COXIT-CO/coxit-skills.git`
+2. Symlink the skill folder into your personal Claude Code skills directory:
+   ```bash
+   ln -s "$(pwd)/coxit-skills/engineering/code-review" ~/.claude/skills/code-review
+   ```
+3. In any Claude Code session, invoke it with `/code-review` — or just describe your task and Claude will match it to the skill's description.
+
+### Option C — Claude Code, team standard in a project repo
+
+**Best for engineers who want a skill to be the default for everyone working on a project.** This is how you turn a skill into a team convention — once committed, every teammate who opens the repo in Claude Code picks it up automatically, no personal setup required.
+
+1. In your project repo, create a `.claude/skills/<skill-name>/` folder.
+2. Copy the skill's `SKILL.md` (and any supporting files) into it.
+3. Commit and push. From that commit on, `/skill-name` is available to anyone who runs Claude Code in that repo, and Claude will auto-match it based on the description.
+
+Use this over Option B whenever the skill encodes a *team* standard (code review bar, PR description style, architecture doc format) rather than a personal preference. Keeping it in the repo means the standard is versioned alongside the code it applies to — when the convention changes, the update ships in the same PR.
+
+### Heads up on quality
+
+Most skills in this repo are still AI-generated starter drafts — they carry an `AI-GENERATED STARTER SKILL` comment at the top. Treat their output as a starting point, review it carefully, and if you refine the skill with real team conventions, open a PR (see below) so everyone benefits.
+
 ## Repository structure
 
 - `company-wide/` — skills for the whole company
