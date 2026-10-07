@@ -1,0 +1,80 @@
+/* shadcn/ui projects: use THIS file instead of tokens.css (shadcn already owns
+   --background, --accent, --border, ... and the names collide with tokens.css).
+   Replace the :root and .dark blocks in globals.css with the blocks below.
+   COXIT-only tokens that shadcn has no slot for are prefixed --cx-*.
+
+   Brand orange = --primary. shadcn's own --accent is the neutral hover
+   background, not orange.
+   Primary buttons on coxit.co use a flame gradient with white 600 text. In
+   shadcn, add a "flame" variant to button.tsx:
+     flame: "bg-[image:var(--cx-gradient-flame)] text-white font-semibold rounded-full hover:bg-[image:var(--cx-gradient-flame-hover)]"
+   and use it for the one primary action per view. */
+
+:root {
+  --font-sans: "Mona Sans", "Mona Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "PP Neue Montreal Mono", "DM Mono", ui-monospace, monospace;
+  --radius: 16px;
+
+  --background: #EEE8E5;
+  --foreground: #0D0D0D;
+  --card: #F7F4F2;
+  --card-foreground: #0D0D0D;
+  --popover: #FFFFFF;
+  --popover-foreground: #0D0D0D;
+  --primary: #E66B01;
+  --primary-foreground: #0D0D0D;
+  --secondary: #E6DFDB;
+  --secondary-foreground: #0D0D0D;
+  --muted: #E6DFDB;
+  --muted-foreground: #6B6762;
+  --accent: #E6DFDB;
+  --accent-foreground: #0D0D0D;
+  --destructive: #A13A2A;
+  --border: rgba(13, 13, 13, 0.16);
+  --input: rgba(13, 13, 13, 0.28);
+  --ring: #E66B01;
+  --chart-1: #E66B01; --chart-2: #0D0D0D; --chart-3: #8A5A12; --chart-4: #2B6B47; --chart-5: #6B6762;
+
+  --cx-text-2: #4C4C4C;
+  --cx-ink: #0D0D0D; --cx-ink-surface: #181818; --cx-ink-text-2: #C2B7B0;
+  --cx-gradient-flame: radial-gradient(140% 180% at 100% 0%, #CC3C20 0%, #E66B01 48%, #F08B21 100%);
+  --cx-gradient-flame-hover: radial-gradient(140% 180% at 100% 0%, #B8341B 0%, #D66200 48%, #E88019 100%);
+  --cx-gradient-corona: radial-gradient(70% 120% at 100% 100%, rgba(255,182,63,.55) 0%, rgba(240,139,33,.45) 18%, rgba(204,60,32,.35) 38%, rgba(47,24,20,.5) 60%, rgba(13,13,13,0) 80%);
+  --cx-accent-text: #B84A00;
+  --cx-accent-tint: rgba(230, 107, 1, 0.10);
+  --cx-good: #2B6B47; --cx-good-tint: rgba(43, 107, 71, 0.10);
+  --cx-warn: #8A5A12; --cx-warn-tint: rgba(138, 90, 18, 0.10);
+  --cx-bad:  #A13A2A; --cx-bad-tint:  rgba(161, 58, 42, 0.10);
+}
+
+.dark, [data-theme="dark"] {
+  --background: #0D0D0D;
+  --foreground: #FFFFFF;
+  --card: #121212;
+  --card-foreground: #FFFFFF;
+  --popover: #181818;
+  --popover-foreground: #FFFFFF;
+  --primary: #E66B01;
+  --primary-foreground: #0D0D0D;
+  --secondary: #181818;
+  --secondary-foreground: #FFFFFF;
+  --muted: #181818;
+  --muted-foreground: #9A9590;
+  --accent: #1F1F1F;
+  --accent-foreground: #FFFFFF;
+  --destructive: #E07A68;
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.24);
+  --ring: #E66B01;
+  --chart-1: #E66B01; --chart-2: #FFFFFF; --chart-3: #D9A54A; --chart-4: #6FB38A; --chart-5: #9A9590;
+
+  --cx-text-2: #C2B7B0;
+  --cx-accent-text: #F08B21;
+  --cx-accent-tint: rgba(240, 139, 33, 0.14);
+  --cx-good: #6FB38A; --cx-good-tint: rgba(111, 179, 138, 0.14);
+  --cx-warn: #D9A54A; --cx-warn-tint: rgba(217, 165, 74, 0.14);
+  --cx-bad:  #E07A68; --cx-bad-tint:  rgba(224, 122, 104, 0.14);
+}
+
+body { font-family: var(--font-sans); letter-spacing: 0.01em; }
+h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.01em; }

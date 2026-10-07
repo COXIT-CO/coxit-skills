@@ -20,7 +20,7 @@ jobs:
         run: |
           set -e
           missing=0
-          for dir in company-wide/*/ c-level/*/ hr/*/ recruitment/*/ engineering/*/ sales/*/; do
+          for dir in company-wide/*/ c-level/*/ hr/*/ recruitment/*/ engineering/*/ design/*/ sales/*/; do
             [ -d "$dir" ] || continue
             if [ ! -f "${dir}SKILL.md" ]; then
               echo "::error file=${dir}::Missing SKILL.md in ${dir}"
