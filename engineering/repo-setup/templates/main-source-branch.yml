@@ -1,0 +1,21 @@
+name: main source branch
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  require-dev-source:
+    name: require-dev-source
+    runs-on: ubuntu-latest
+    steps:
+      - name: Only allow PRs from dev into main
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          if [ "$HEAD_REF" != "dev" ] || [ "$HEAD_REPO" != "${{ github.repository }}" ]; then
+            echo "::error::PRs into main must come from the dev branch (got '$HEAD_REPO:$HEAD_REF')."
+            exit 1
+          fi
+          echo "Source branch is dev."
