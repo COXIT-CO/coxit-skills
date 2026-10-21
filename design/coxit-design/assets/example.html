@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riverside Medical Office · Takeoff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400..600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Real project: <link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="components.css"> -->
+<style>
+/* COXIT design tokens — source of truth.
+   Derived from coxit.co (2026) and COXIT client decks.
+   Light is the default for product UI. Dark mirrors the marketing site.
+
+   Fonts (pick one way to load them):
+   - npm:    npm i @fontsource-variable/mona-sans @fontsource/dm-mono
+             import "@fontsource-variable/mona-sans"; import "@fontsource/dm-mono/400.css"; import "@fontsource/dm-mono/500.css";
+   - CDN:    <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400..600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+   The site's mono is PP Neue Montreal Mono (licensed). Use it only if the
+   project already has the files; DM Mono is the free stand-in. */
+
+:root {
+  /* ── Type ─────────────────────────────────────────────── */
+  --font-sans: "Mona Sans", "Mona Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "PP Neue Montreal Mono", "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Scale taken from coxit.co: 64px section titles, 24px card titles,
+     16px body and mono labels, 13px table headers. Apps use the same
+     numbers, just fewer of the big ones. */
+  --text-xs: 0.75rem;    /* 12 — fine print, chart ticks */
+  --text-sm: 0.8125rem;  /* 13 — mono table headers, meta */
+  --text-base: 0.9375rem;/* 15 — dense app text (tables, nav) */
+  --text-md: 1rem;       /* 16 — body, inputs, mono labels (site default) */
+  --text-lg: 1.25rem;    /* 20 — panel titles */
+  --text-xl: 1.5rem;     /* 24 — card titles (site h3) */
+  --text-2xl: 2.5rem;    /* 40 — app page titles, key metrics */
+  --text-3xl: 3rem;      /* 48 — hero metrics, hero titles in apps */
+  --text-4xl: 4rem;      /* 64 — site section titles, report covers */
+
+  --weight-regular: 400;
+  --weight-medium: 500;  /* every heading on the site is 500 */
+  --weight-semibold: 600;/* buttons on gradient, rare emphasis */
+
+  --leading-display: 1;  /* 48px+ */
+  --leading-tight: 1.1;  /* headings */
+  --leading-snug: 1.3;
+  --leading-normal: 1.5;
+  --tracking-display: -0.0125em;
+  --tracking-heading: -0.01em;
+  --tracking-body: 0.01em;
+  --tracking-mono: 0.01em;
+
+  /* ── Space (4px grid) ──────────────────────────────────── */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px;
+
+  /* ── Radius ────────────────────────────────────────────── */
+  --radius-sm: 8px;    /* chips, small controls, table row hover */
+  --radius-md: 12px;   /* inputs, menus, small cards */
+  --radius-lg: 16px;   /* panels, app cards */
+  --radius-xl: 24px;   /* feature cards, marketing blocks, big tables */
+  --radius-pill: 999px;/* buttons, badges, toggles */
+
+  /* ── Motion ────────────────────────────────────────────── */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --dur-fast: 120ms;
+  --dur: 200ms;
+
+  /* ── Layout ────────────────────────────────────────────── */
+  --sidebar-w: 240px;
+  --topbar-h: 56px;
+  --content-max: 1280px;
+  --reading-max: 720px;
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+
+  /* ── Ink: always-dark surfaces inside a light app (hero band, nav pill, viewer toolbar) ── */
+  --ink: #0D0D0D;
+  --ink-surface: #181818;
+  --ink-text: #FFFFFF;
+  --ink-text-2: #C2B7B0;     /* the site's headline color on dark */
+  --ink-text-3: #8A8A8A;
+  --ink-border: rgba(255, 255, 255, 0.12);
+  --on-flame: #FFFFFF;       /* text on --gradient-flame, weight 600 */
+
+  /* ── Signature gradients (from coxit.co) ───────────────── */
+  /* Primary button: red-orange at the top-right, warm orange at the bottom-left. */
+  --gradient-flame: radial-gradient(140% 180% at 100% 0%, #CC3C20 0%, #E66B01 48%, #F08B21 100%);
+  --gradient-flame-hover: radial-gradient(140% 180% at 100% 0%, #B8341B 0%, #D66200 48%, #E88019 100%);
+  /* Eclipse corona: the hero video / footer glow. Only on dark surfaces, one per screen. */
+  --gradient-corona: radial-gradient(70% 120% at 100% 100%, rgba(255,182,63,.55) 0%, rgba(240,139,33,.45) 18%, rgba(204,60,32,.35) 38%, rgba(47,24,20,.5) 60%, rgba(13,13,13,0) 80%);
+  /* Dark-to-canvas "horizon" between a dark band and the beige page. */
+  --gradient-horizon: radial-gradient(120% 100% at 50% 100%, var(--bg) 40%, #9AA3AE 62%, #0D0D0D 85%);
+}
+
+/* ── Light (default) ─────────────────────────────────────── */
+:root, [data-theme="light"] {
+  --bg: #EEE8E5;              /* page canvas — the warm COXIT beige */
+  --surface: #F7F4F2;         /* panels, cards, tables */
+  --surface-raised: #FFFFFF;  /* inputs, menus, popovers, modals */
+  --surface-sunken: #E6DFDB;  /* wells, code, drop zones */
+
+  --text: #0D0D0D;
+  --text-2: #4C4C4C;          /* secondary text — 7:1 */
+  --text-3: #6B6762;          /* meta, captions — lowest for readable text, 5:1 */
+  --text-disabled: #8A8A8A;   /* disabled + decorative only, fails AA */
+
+  --border: rgba(13, 13, 13, 0.16);
+  --border-subtle: rgba(13, 13, 13, 0.08);
+  --border-strong: rgba(13, 13, 13, 0.28);
+
+  --accent: #E66B01;          /* Flame. Fills, bars, focus, the one thing to look at */
+  --accent-hover: #CC5A00;
+  --accent-pressed: #B84A00;
+  --accent-text: #B84A00;     /* orange as TEXT on light bg (#E66B01 text fails contrast) */
+  --on-accent: #0D0D0D;       /* text on orange — dark, like the site buttons */
+  --accent-tint: rgba(230, 107, 1, 0.10);
+
+  --good: #2B6B47;  --good-tint: rgba(43, 107, 71, 0.10);
+  --warn: #8A5A12;  --warn-tint: rgba(138, 90, 18, 0.10);
+  --bad:  #A13A2A;  --bad-tint:  rgba(161, 58, 42, 0.10);
+  --info: #005F75;  --info-tint: rgba(0, 95, 117, 0.10);
+
+  --shadow-pop: 0 8px 24px rgba(13, 13, 13, 0.10), 0 1px 2px rgba(13, 13, 13, 0.06);
+  color-scheme: light;
+}
+
+/* ── Dark (mirrors coxit.co) ─────────────────────────────── */
+[data-theme="dark"] {
+  --bg: #0D0D0D;
+  --surface: #121212;
+  --surface-raised: #181818;
+  --surface-sunken: #080808;
+
+  --text: #FFFFFF;
+  --text-2: #C2B7B0;          /* site "nue" */
+  --text-3: #9A9590;
+  --text-disabled: #5E5A57;
+
+  --border: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.24);
+
+  --accent: #E66B01;
+  --accent-hover: #F08B21;
+  --accent-pressed: #CC5A00;
+  --accent-text: #F08B21;
+  --on-accent: #0D0D0D;
+  --accent-tint: rgba(240, 139, 33, 0.14);
+
+  --good: #6FB38A;  --good-tint: rgba(111, 179, 138, 0.14);
+  --warn: #D9A54A;  --warn-tint: rgba(217, 165, 74, 0.14);
+  --bad:  #E07A68;  --bad-tint:  rgba(224, 122, 104, 0.14);
+  --info: #5FB4C9;  --info-tint: rgba(95, 180, 201, 0.14);
+
+  --shadow-pop: 0 8px 24px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+
+/* ── Base ────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-body);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-heading);
+  line-height: var(--leading-snug);
+  text-wrap: balance;
+}
+p { margin: 0; text-wrap: pretty; }
+a { color: var(--accent-text); text-underline-offset: 2px; }
+:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+.num, td.num { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+}
+
+/* COXIT components v2. Requires tokens.css.
+   Patterns lifted from coxit.co: dark pill nav, flame-gradient pill buttons,
+   //MONO labels, label-column sections, translucent 24px cards, CaseVBench
+   table, eclipse-corona hero band, crop-mark frames.
+   React projects: treat this as the spec and rebuild in your components. */
+
+/* ═══ Shell ═══════════════════════════════════════════════════ */
+.cx-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.cx-header {
+  position: sticky; top: 0; z-index: 20;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--space-4);
+  height: 72px; padding: 0 var(--space-6);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(1.2) blur(8px);
+}
+.cx-header__logo { display: inline-flex; align-items: center; justify-self: start; }
+.cx-header__logo svg { height: 18px; width: auto; }
+.cx-header__end { justify-self: end; display: flex; align-items: center; gap: var(--space-3); }
+
+/* The site's signature: a dark pill holding the nav, centered in the header. */
+.cx-navpill { display: inline-flex; align-items: center; gap: 2px; height: 46px; padding: 0 6px; border-radius: var(--radius-pill); background: var(--ink); }
+.cx-navpill a {
+  display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border-radius: var(--radius-pill);
+  color: var(--ink-text-2); font-size: var(--text-md); text-decoration: none; letter-spacing: var(--tracking-body);
+  transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+.cx-navpill a:hover { color: var(--ink-text); }
+.cx-navpill a[aria-current="page"] { color: var(--ink-text); background: var(--ink-surface); }
+.cx-navpill a[aria-current="page"]::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+.cx-menu-btn { display: none; }
+.cx-avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--ink-text-2); font: var(--weight-medium) var(--text-sm)/1 var(--font-mono); }
+
+.cx-page { width: 100%; max-width: 1360px; margin: 0 auto; padding: var(--space-4) var(--space-6) var(--space-20); }
+
+/* Sidebar variant for apps with many sections */
+.cx-app { display: grid; grid-template-columns: var(--sidebar-w) minmax(0, 1fr); min-height: 100vh; }
+.cx-sidebar { background: var(--ink); color: var(--ink-text-2); padding: var(--space-6) var(--space-3); display: flex; flex-direction: column; gap: 2px; }
+.cx-sidebar__logo { padding: 0 var(--space-3) var(--space-8); }
+.cx-sidebar a { display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 var(--space-3); border-radius: var(--radius-pill); color: var(--ink-text-2); text-decoration: none; font-size: var(--text-md); }
+.cx-sidebar a:hover { color: var(--ink-text); }
+.cx-sidebar a[aria-current="page"] { background: var(--ink-surface); color: var(--ink-text); }
+.cx-sidebar a[aria-current="page"]::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+/* ═══ Type helpers ════════════════════════════════════════════ */
+.cx-display { font-size: var(--text-3xl); font-weight: var(--weight-medium); line-height: var(--leading-display); letter-spacing: var(--tracking-display); }
+.cx-title { font-size: var(--text-2xl); font-weight: var(--weight-medium); line-height: var(--leading-tight); letter-spacing: var(--tracking-heading); }
+.cx-h3 { font-size: var(--text-xl); font-weight: var(--weight-medium); line-height: var(--leading-snug); }
+.cx-lead { font-size: var(--text-md); color: var(--text-2); max-width: 36rem; }
+.cx-meta { font-size: var(--text-sm); color: var(--text-3); }
+.cx-mono { font-family: var(--font-mono); letter-spacing: var(--tracking-mono); }
+
+/* //LABEL — the site's mono eyebrow. 14–16px, uppercase, no extra tracking. */
+.cx-eyebrow { font: var(--weight-medium) 0.875rem/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: var(--tracking-mono); color: var(--text); }
+.cx-eyebrow::before { content: "//"; }
+.cx-eyebrow--accent { color: var(--accent-text); }
+.cx-eyebrow--muted { color: var(--text-3); }
+
+/* [1] [2] — ordered items, orange mono */
+.cx-index { font: 0.875rem/1 var(--font-mono); color: var(--accent-text); }
+
+/* ═══ Sections: label column + content (coxit.co layout) ══════ */
+.cx-section { display: grid; grid-template-columns: 16rem minmax(0, 1fr); gap: var(--space-6); padding: var(--space-12) 0; }
+.cx-section + .cx-section { border-top: 1px solid var(--border-subtle); }
+.cx-section__label { padding-top: 6px; }
+
+/* ═══ Hero band (dark, with the eclipse corona) ═══════════════ */
+.cx-hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  background: var(--ink); color: var(--ink-text); border-radius: var(--radius-xl);
+  padding: var(--space-10);
+}
+.cx-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--gradient-corona); pointer-events: none; }
+.cx-hero .cx-display, .cx-hero .cx-title { color: var(--ink-text-2); }
+.cx-hero .cx-meta { color: var(--ink-text-3); }
+.cx-hero .cx-eyebrow { color: var(--ink-text-2); }
+.cx-hero .cx-eyebrow--accent { color: #F08B21; }
+.cx-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-10); align-items: end; }
+
+/* Metrics on dark: big numbers separated by hairlines */
+.cx-stats { display: flex; flex-wrap: wrap; gap: 0; margin-top: var(--space-10); border-top: 1px solid var(--ink-border); }
+.cx-stat { padding: var(--space-5) var(--space-8) 0 0; margin-right: var(--space-8); }
+.cx-stat + .cx-stat { padding-left: var(--space-8); border-left: 1px solid var(--ink-border); }
+.cx-stat__label { font: var(--weight-medium) 0.8125rem/1.2 var(--font-mono); text-transform: uppercase; color: var(--ink-text-3); }
+.cx-stat__value { font-size: var(--text-3xl); font-weight: var(--weight-medium); line-height: var(--leading-display); letter-spacing: var(--tracking-display); margin-top: var(--space-3); font-variant-numeric: tabular-nums; color: var(--ink-text); }
+.cx-stat__unit { font-size: var(--text-lg); color: var(--ink-text-3); margin-left: 4px; letter-spacing: 0; }
+.cx-stat--warn .cx-stat__value { color: #F08B21; }
+
+/* ═══ Buttons ═════════════════════════════════════════════════ */
+.cx-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  height: 44px; padding: 0 var(--space-6); border-radius: var(--radius-pill);
+  font: var(--weight-medium) var(--text-md)/1 var(--font-sans); letter-spacing: var(--tracking-body);
+  border: 1px solid transparent; cursor: pointer; white-space: nowrap; text-decoration: none; color: inherit;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.cx-btn--primary { background: var(--gradient-flame); color: var(--on-flame); font-weight: var(--weight-semibold); }
+.cx-btn--primary:hover { background: var(--gradient-flame-hover); }
+.cx-btn--secondary { background: transparent; color: var(--text); border-color: var(--border-strong); }
+.cx-btn--secondary:hover { border-color: var(--text); }
+.cx-btn--ink { background: var(--ink); color: var(--ink-text); }
+.cx-btn--ink:hover { background: #262626; }
+.cx-btn--ghost { background: transparent; color: var(--text-2); padding: 0 var(--space-3); }
+.cx-btn--ghost:hover { color: var(--text); background: color-mix(in srgb, var(--text) 6%, transparent); }
+/* On dark surfaces */
+.cx-hero .cx-btn--secondary, .cx-on-ink .cx-btn--secondary { color: var(--ink-text); border-color: var(--ink-border); }
+.cx-hero .cx-btn--secondary:hover, .cx-on-ink .cx-btn--secondary:hover { border-color: var(--ink-text-2); }
+.cx-btn--sm { height: 32px; padding: 0 var(--space-4); font-size: var(--text-sm); }
+.cx-btn--icon { width: 36px; height: 36px; padding: 0; }
+.cx-btn:disabled, .cx-btn[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; }
+
+/* ═══ Cards (translucent on beige, like coxit.co) ═════════════ */
+.cx-card { background: rgba(255, 255, 255, 0.5); border: 1px solid var(--border); border-radius: var(--radius-xl); }
+[data-theme="dark"] .cx-card { background: var(--surface); }
+.cx-card--pad { padding: var(--space-8); }
+.cx-card--featured { border: 3px solid var(--accent); }
+.cx-card__head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--border-subtle); }
+
+/* Crop marks: the corner brackets coxit.co puts on badges. Use on a viewer or a key figure. */
+.cx-cropmarks { position: relative; --cm: var(--text-3); --cm-len: 12px; --cm-gap: 8px; }
+.cx-cropmarks::after {
+  content: ""; position: absolute; inset: calc(-1 * var(--cm-gap)); pointer-events: none;
+  background:
+    linear-gradient(var(--cm), var(--cm)) top left / var(--cm-len) 1px no-repeat,
+    linear-gradient(var(--cm), var(--cm)) top left / 1px var(--cm-len) no-repeat,
+    linear-gradient(var(--cm), var(--cm)) top right / var(--cm-len) 1px no-repeat,
+    linear-gradient(var(--cm), var(--cm)) top right / 1px var(--cm-len) no-repeat,
+    linear-gradient(var(--cm), var(--cm)) bottom left / var(--cm-len) 1px no-repeat,
+    linear-gradient(var(--cm), var(--cm)) bottom left / 1px var(--cm-len) no-repeat,
+    linear-gradient(var(--cm), var(--cm)) bottom right / var(--cm-len) 1px no-repeat,
+    linear-gradient(var(--cm), var(--cm)) bottom right / 1px var(--cm-len) no-repeat;
+}
+
+/* Dark floating tool pill (viewer toolbar, bulk actions) */
+.cx-toolpill { display: inline-flex; align-items: center; gap: 2px; height: 40px; padding: 0 4px; border-radius: var(--radius-pill); background: var(--ink); color: var(--ink-text-2); box-shadow: var(--shadow-pop); }
+.cx-toolpill button { height: 32px; min-width: 32px; padding: 0 10px; border: 0; border-radius: var(--radius-pill); background: transparent; color: inherit; font: var(--text-sm) var(--font-mono); cursor: pointer; }
+.cx-toolpill button:hover { color: var(--ink-text); background: var(--ink-surface); }
+.cx-toolpill__sep { width: 1px; height: 18px; background: var(--ink-border); margin: 0 4px; }
+.cx-toolpill__text { padding: 0 10px; white-space: nowrap; font: var(--text-sm) var(--font-mono); color: var(--ink-text); }
+
+/* ═══ Inputs ══════════════════════════════════════════════════ */
+.cx-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.cx-label { font: var(--weight-medium) 0.8125rem/1.2 var(--font-mono); text-transform: uppercase; color: var(--text-2); }
+.cx-input, .cx-select, .cx-textarea {
+  height: 44px; padding: 0 var(--space-4); border-radius: var(--radius-md);
+  background: var(--surface-raised); border: 1px solid var(--border); color: var(--text);
+  font: var(--text-md) var(--font-sans); letter-spacing: var(--tracking-body);
+  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+.cx-input::placeholder { color: var(--text-3); }
+.cx-textarea { height: auto; min-height: 112px; padding: var(--space-3) var(--space-4); resize: vertical; }
+.cx-input:hover, .cx-select:hover, .cx-textarea:hover { border-color: var(--border-strong); }
+.cx-input:focus, .cx-select:focus, .cx-textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-tint); }
+.cx-input[aria-invalid="true"] { border-color: var(--bad); }
+.cx-field-error { font-size: var(--text-sm); color: var(--bad); }
+.cx-search { padding-left: 40px; background: var(--surface-raised) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236B6762' stroke-width='1.6'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='m11 11 3.5 3.5'/%3E%3C/svg%3E") 16px 50% no-repeat; }
+
+/* ═══ Badges ══════════════════════════════════════════════════ */
+.cx-badge { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: var(--radius-pill); font-size: var(--text-sm); font-weight: var(--weight-medium); white-space: nowrap; }
+.cx-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.cx-badge--good { color: var(--good); background: var(--good-tint); }
+.cx-badge--warn { color: var(--warn); background: var(--warn-tint); }
+.cx-badge--bad  { color: var(--bad);  background: var(--bad-tint); }
+.cx-badge--neutral { color: var(--text-2); background: color-mix(in srgb, var(--text) 6%, transparent); }
+.cx-badge--new { color: var(--accent-text); border: 1px solid currentColor; height: 22px; font-size: var(--text-xs); }
+.cx-badge--new::before { display: none; }
+/* Text-only status (quieter than a pill, good for dense tables) */
+.cx-status { display: inline-flex; align-items: center; gap: 8px; font-size: var(--text-base); color: var(--text-2); white-space: nowrap; }
+.cx-status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--text-3); }
+.cx-status--good::before { background: var(--good); } .cx-status--warn { color: var(--warn); } .cx-status--warn::before { background: var(--warn); }
+.cx-status--bad { color: var(--bad); } .cx-status--bad::before { background: var(--bad); }
+
+/* ═══ Table (CaseVBench) ══════════════════════════════════════ */
+.cx-table-wrap { overflow-x: auto; }
+.cx-table { width: 100%; min-width: 640px; border-collapse: separate; border-spacing: 0; font-size: var(--text-md); }
+.cx-table th {
+  text-align: left; font: var(--weight-medium) var(--text-sm)/1.2 var(--font-mono); letter-spacing: var(--tracking-mono); color: var(--text-2);
+  padding: var(--space-5) var(--space-3) var(--space-3); border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+.cx-table th[aria-sort] { color: var(--text); }
+.cx-table td { height: 56px; padding: 0 var(--space-3); white-space: nowrap; border-bottom: 1px solid var(--border-subtle); vertical-align: middle; font-weight: var(--weight-medium); }
+.cx-table td.wrap { white-space: normal; min-width: 16rem; }
+.cx-table tbody tr:last-child td { border-bottom: 0; }
+.cx-table th:first-child, .cx-table td:first-child { padding-left: var(--space-8); }
+.cx-table th:last-child, .cx-table td:last-child { padding-right: var(--space-8); }
+.cx-table tbody tr { transition: background var(--dur-fast) var(--ease); }
+.cx-table tbody tr:hover { background: color-mix(in srgb, var(--text) 3%, transparent); }
+.cx-table tbody tr[aria-selected="true"] { background: var(--accent-tint); }
+.cx-table tbody tr[aria-selected="true"] td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+.cx-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cx-table .muted { color: var(--text-3); font-weight: var(--weight-regular); }
+.cx-table .code { font-family: var(--font-mono); font-weight: var(--weight-medium); white-space: nowrap; }
+.cx-table .cx-mono, .cx-table .cx-badge, .cx-table .cx-status { white-space: nowrap; }
+.cx-table-foot { display: flex; justify-content: space-between; align-items: center; padding: var(--space-4) var(--space-8); border-top: 1px solid var(--border); font-size: var(--text-sm); color: var(--text-3); }
+
+/* Magnitude bar — orange for the leader / selected row only */
+.cx-bar { display: inline-block; width: 96px; height: 6px; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--text) 8%, transparent); vertical-align: middle; overflow: hidden; }
+.cx-bar > span { display: block; height: 100%; border-radius: inherit; background: var(--text); }
+.cx-bar--accent > span { background: var(--accent); }
+.cx-cell-bar { display: inline-flex; align-items: center; gap: var(--space-3); }
+.score-good { color: var(--good); } .score-mid { color: var(--warn); } .score-poor { color: var(--bad); }
+
+/* ═══ Metrics on light ════════════════════════════════════════ */
+.cx-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); border-top: 1px solid var(--border); }
+.cx-metric { padding: var(--space-5) var(--space-6) var(--space-5) 0; }
+.cx-metric + .cx-metric { padding-left: var(--space-6); border-left: 1px solid var(--border-subtle); }
+.cx-metric__label { font: var(--weight-medium) 0.8125rem/1.2 var(--font-mono); text-transform: uppercase; color: var(--text-3); }
+.cx-metric__value { font-size: var(--text-2xl); font-weight: var(--weight-medium); letter-spacing: var(--tracking-heading); line-height: var(--leading-display); margin-top: var(--space-3); font-variant-numeric: tabular-nums; }
+
+/* ═══ Tabs / segmented ════════════════════════════════════════ */
+.cx-tabs { display: flex; gap: var(--space-6); border-bottom: 1px solid var(--border); }
+.cx-tab { padding: var(--space-3) 0; color: var(--text-3); font: var(--weight-medium) var(--text-md) var(--font-sans); border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; background: none; cursor: pointer; }
+.cx-tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
+.cx-segmented { display: inline-flex; padding: 4px; gap: 2px; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--text) 6%, transparent); }
+.cx-segmented button { height: 32px; padding: 0 var(--space-4); border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--text-2); font: var(--weight-medium) var(--text-base) var(--font-sans); cursor: pointer; }
+.cx-segmented button[aria-pressed="true"] { background: var(--ink); color: var(--ink-text); }
+
+/* ═══ Lists: numbered rows like coxit.co "When you need a PoC" ═ */
+.cx-rows { list-style: none; margin: 0; padding: 0; }
+.cx-rows > li { display: grid; grid-template-columns: 2rem minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-4) var(--space-6); padding: var(--space-6) 0; border-bottom: 1px solid var(--border); }
+.cx-rows > li:first-child { padding-top: 0; }
+.cx-rows h3 { font-size: var(--text-xl); }
+.cx-rows p { color: var(--text-2); }
+
+/* ═══ States ══════════════════════════════════════════════════ */
+.cx-empty { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); padding: var(--space-12) var(--space-10); border-radius: var(--radius-xl); }
+.cx-empty h3 { font-size: var(--text-xl); font-weight: var(--weight-medium); }
+.cx-dropzone { display: grid; place-items: center; gap: var(--space-3); padding: var(--space-16) var(--space-10); border: 1px dashed var(--border-strong); border-radius: var(--radius-xl); color: var(--text-2); text-align: center; transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease); }
+.cx-dropzone[data-drag="true"] { border-color: var(--accent); background: var(--accent-tint); }
+.cx-skeleton { background: linear-gradient(90deg, color-mix(in srgb, var(--text) 6%, transparent) 0%, color-mix(in srgb, var(--text) 3%, transparent) 50%, color-mix(in srgb, var(--text) 6%, transparent) 100%); background-size: 200% 100%; animation: cx-shimmer 1.4s linear infinite; border-radius: var(--radius-sm); }
+@keyframes cx-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.cx-progress { height: 4px; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--text) 8%, transparent); overflow: hidden; }
+.cx-progress > span { display: block; height: 100%; background: var(--gradient-flame); transition: width var(--dur) var(--ease); }
+.cx-callout { display: flex; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md); font-size: var(--text-base); background: var(--warn-tint); }
+.cx-callout--bad { background: var(--bad-tint); }
+
+/* ═══ Responsive ══════════════════════════════════════════════ */
+@media (max-width: 960px) {
+  .cx-header { grid-template-columns: auto 1fr; padding: 0 var(--space-4); }
+  .cx-page { padding: var(--space-2) var(--space-4) var(--space-16); }
+  .cx-display { font-size: var(--text-2xl); }
+  .cx-header .cx-navpill { display: none; }
+  .cx-app { grid-template-columns: minmax(0, 1fr); }
+  .cx-sidebar { display: none; }
+  .cx-section { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  .cx-hero { padding: var(--space-6); }
+  .cx-hero__grid { grid-template-columns: minmax(0, 1fr); }
+  .cx-stats { display: grid; grid-template-columns: 1fr 1fr; }
+  .cx-stat, .cx-stat + .cx-stat { margin: 0; padding: var(--space-5) var(--space-4) 0 0; border-left: 0; }
+  .cx-stat__value { font-size: var(--text-2xl); }
+  .cx-menu-btn { display: inline-flex; }
+  .cx-rows > li { grid-template-columns: 2rem minmax(0, 1fr); }
+  .cx-rows > li > p { grid-column: 2; }
+}
+
+
+/* ── Screen layout only ── */
+.work { display: grid; grid-template-columns: minmax(0, 1fr) 460px; gap: var(--space-5); margin-top: var(--space-5); align-items: start; }
+.tools { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: space-between; align-items: center; padding: var(--space-5) var(--space-8) var(--space-2); }
+.tools .cx-input { width: min(260px, 100%); height: 40px; }
+.viewer { position: sticky; top: 88px; overflow: hidden; }
+.viewer__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); padding: var(--space-5) var(--space-6) var(--space-4); }
+.viewer__stage { position: relative; margin: 0 var(--space-4); padding: var(--space-6); border-radius: var(--radius-lg); background: color-mix(in srgb, var(--text) 5%, transparent); }
+.viewer__sheet { background: #fff; padding: 10px; }
+.viewer__sheet svg { display: block; width: 100%; height: auto; }
+.viewer__tools { position: absolute; left: 50%; bottom: -20px; transform: translateX(-50%); }
+.detail { padding: var(--space-10) var(--space-6) var(--space-6); }
+.detail__row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); margin: var(--space-5) 0 var(--space-6); }
+.detail__k { font: var(--weight-medium) 0.8125rem/1.2 var(--font-mono); text-transform: uppercase; color: var(--text-3); }
+.detail__v { font-size: var(--text-xl); font-weight: var(--weight-medium); margin-top: 6px; font-variant-numeric: tabular-nums; }
+.detail__actions { display: flex; gap: var(--space-3); }
+.hero-actions { display: flex; gap: var(--space-3); }
+.ink { stroke: #2B2B2B; stroke-width: 1; fill: none; }
+.ink-l { stroke: #9C968F; stroke-width: .7; fill: none; }
+.det { fill: rgba(13,13,13,.03); stroke: #0D0D0D; stroke-width: 1; }
+.det--sel { fill: rgba(230,107,1,.14); stroke: #E66B01; stroke-width: 2; }
+.det--flag { fill: rgba(138,90,18,.08); stroke: #8A5A12; stroke-width: 1.2; stroke-dasharray: 4 3; }
+.lbl { font: 500 8.5px var(--font-mono); fill: #6B6762; }
+.lbl--sel { fill: #B84A00; }
+.dim { font: 7px var(--font-mono); fill: #9C968F; }
+@media (max-width: 1180px) { .work { grid-template-columns: minmax(0, 1fr); } .viewer { position: static; } }
+@media (max-width: 600px) { .hero-actions { flex-wrap: wrap; } .tools { padding: var(--space-4); } .detail__row { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="cx-shell">
+  <header class="cx-header">
+    <a class="cx-header__logo" href="#" aria-label="COXIT home"><svg role="img" aria-label="COXIT" width="59" height="18" viewBox="0 0 59 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_13587_5782)">
+<path d="M9.95075 9.63752C9.30497 9.19445 8.51244 8.83445 7.66119 8.83445C5.95871 8.83445 4.60846 10.0529 4.60846 11.6314C4.60846 13.2929 5.9 14.456 7.74925 14.456C8.54179 14.456 9.39303 14.1791 9.9801 13.6806V17.1144C9.01144 17.5575 7.92537 17.7514 6.8393 17.7514C3.11144 17.7514 0 15.2314 0 11.7698C0 8.08675 3.08209 5.53906 7.01542 5.53906C8.04279 5.53906 9.07015 5.7606 9.95075 6.20368V9.63752Z" fill="#0D0D0D"/>
+<path d="M25.8011 11.6317C25.8011 15.5363 22.4548 17.724 18.6095 17.724C14.7936 17.724 11.418 15.5363 11.418 11.6317C11.418 7.7271 14.7642 5.51172 18.6095 5.51172C22.4548 5.51172 25.8011 7.7271 25.8011 11.6317ZM15.8797 11.8533C15.8797 13.3486 16.8777 14.5117 18.6095 14.5117C20.3414 14.5117 21.3394 13.3486 21.3394 11.8533C21.3394 10.3856 20.3414 9.1671 18.6095 9.1671C16.907 9.1671 15.8797 10.3856 15.8797 11.8533Z" fill="#0D0D0D"/>
+<path d="M26.799 5.89844H32.112L34.2254 8.33536L36.3388 5.89844H41.7692L36.8965 11.3261L42.7965 17.7507H37.2781L34.2254 14.2338L31.1726 17.7507H25.6836L31.5836 11.3261L26.799 5.89844Z" fill="#0D0D0D"/>
+<path d="M48.7273 17.7507H44.2656V5.89844H48.7273V17.7507Z" fill="#0D0D0D"/>
+<path d="M46.5263 4.70769C47.9059 4.70769 49.0213 3.65538 49.0213 2.35385C49.0213 1.05231 47.8765 0 46.5263 0C45.1467 0 44.0312 1.05231 44.0312 2.35385C44.0312 3.65538 45.1467 4.70769 46.5263 4.70769Z" fill="#E66B01"/>
+<path d="M56.2125 17.7504H51.7508V9.35967H50.3125V5.89813H51.7508V2.35352H56.2125V5.89813H58.7369V9.35967H56.2125V17.7504Z" fill="#0D0D0D"/>
+</g>
+<defs>
+<clipPath id="clip0_13587_5782">
+<rect width="59" height="18" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+</a>
+    <nav class="cx-navpill" aria-label="Main">
+      <a href="#">Projects</a>
+      <a href="#" aria-current="page">Takeoffs</a>
+      <a href="#">Catalog</a>
+      <a href="#">Accuracy</a>
+    </nav>
+    <div class="cx-header__end"><button class="cx-btn cx-btn--ink cx-btn--sm cx-menu-btn" aria-label="Open menu">Menu</button><span class="cx-avatar" aria-label="Ihor Sikora">IS</span></div>
+  </header>
+
+  <main class="cx-page">
+    <section class="cx-hero" aria-labelledby="t">
+      <div class="cx-hero__grid">
+        <div>
+          <p class="cx-eyebrow cx-eyebrow--accent">Takeoff complete</p>
+          <h1 id="t" class="cx-display" style="margin-top:var(--space-4)">Riverside Medical Office</h1>
+          <p class="cx-meta" style="margin-top:var(--space-3);font-size:var(--text-md)">Casework package, 37 sheets read in 6 min</p>
+        </div>
+        <div class="hero-actions">
+          <button class="cx-btn cx-btn--secondary">Rerun</button>
+          <button class="cx-btn cx-btn--primary">Export to Excel</button>
+        </div>
+      </div>
+      <div class="cx-stats">
+        <div class="cx-stat"><div class="cx-stat__label">Cabinets</div><div class="cx-stat__value">142</div></div>
+        <div class="cx-stat"><div class="cx-stat__label">Countertop</div><div class="cx-stat__value">286<span class="cx-stat__unit">LF</span></div></div>
+        <div class="cx-stat"><div class="cx-stat__label">Sheets with casework</div><div class="cx-stat__value">12<span class="cx-stat__unit">/ 37</span></div></div>
+        <div class="cx-stat cx-stat--warn"><div class="cx-stat__label">To review</div><div class="cx-stat__value">9</div></div>
+      </div>
+    </section>
+
+    <div class="work">
+      <section class="cx-card" aria-label="Detected items">
+        <div class="tools">
+          <div class="cx-segmented" role="group" aria-label="Group by">
+            <button aria-pressed="true">By type</button>
+            <button aria-pressed="false">By sheet</button>
+            <button aria-pressed="false">To review</button>
+          </div>
+          <input class="cx-input cx-search" type="search" placeholder="B24, sink, A-302" aria-label="Search items">
+        </div>
+        <div class="cx-table-wrap">
+          <table class="cx-table">
+            <thead><tr>
+              <th scope="col">Code</th><th scope="col">Description</th><th scope="col">Sheet</th>
+              <th scope="col" class="num" aria-sort="descending">Qty ↓</th><th scope="col" class="num">Width, in</th><th scope="col">Status</th>
+            </tr></thead>
+            <tbody>
+              <tr><td class="code">FS3</td><td>Filler strip</td><td class="code muted">A-301</td><td class="num"><span class="cx-cell-bar">31 <span class="cx-bar"><span style="width:100%"></span></span></span></td><td class="num">3</td><td><span class="cx-status cx-status--good">Reviewed</span></td></tr>
+              <tr><td class="code">W3030</td><td>Wall, 2 door</td><td class="code muted">A-301</td><td class="num"><span class="cx-cell-bar">22 <span class="cx-bar"><span style="width:71%"></span></span></span></td><td class="num">30</td><td><span class="cx-status">Detected</span></td></tr>
+              <tr aria-selected="true"><td class="code">B24</td><td>Base, 1 door 1 drawer</td><td class="code muted">A-301</td><td class="num"><span class="cx-cell-bar">18 <span class="cx-bar cx-bar--accent"><span style="width:58%"></span></span></span></td><td class="num">24</td><td><span class="cx-status cx-status--good">Reviewed</span></td></tr>
+              <tr><td class="code">W1530</td><td>Wall, 1 door</td><td class="code muted">A-304</td><td class="num"><span class="cx-cell-bar">14 <span class="cx-bar"><span style="width:45%"></span></span></span></td><td class="num">15</td><td><span class="cx-status">Detected</span></td></tr>
+              <tr><td class="code">B36</td><td>Base, 2 door</td><td class="code muted">A-301</td><td class="num"><span class="cx-cell-bar">11 <span class="cx-bar"><span style="width:35%"></span></span></span></td><td class="num">36</td><td><span class="cx-status">Detected</span></td></tr>
+              <tr><td class="code">DB18-3</td><td>Drawer base, 3 drawer</td><td class="code muted">A-302</td><td class="num"><span class="cx-cell-bar">9 <span class="cx-bar"><span style="width:29%"></span></span></span></td><td class="num">18</td><td><span class="cx-status cx-status--warn">Check width</span></td></tr>
+              <tr><td class="code">SB36</td><td>Sink base</td><td class="code muted">A-302</td><td class="num"><span class="cx-cell-bar">6 <span class="cx-bar"><span style="width:19%"></span></span></span></td><td class="num">36</td><td><span class="cx-status">Detected</span></td></tr>
+              <tr><td class="code">T8424</td><td>Tall, utility</td><td class="code muted">A-305</td><td class="num"><span class="cx-cell-bar">4 <span class="cx-bar"><span style="width:13%"></span></span></span></td><td class="num">24</td><td><span class="cx-status cx-status--warn">Check code</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cx-table-foot"><span>8 of 31 codes</span><a href="#">Show all</a></div>
+      </section>
+
+      <aside class="cx-card viewer" aria-label="Sheet A-301">
+        <div class="viewer__head">
+          <h2 class="cx-h3 cx-mono" style="font-size:var(--text-lg)">A-301</h2>
+          <span class="cx-meta">Exam rooms 104–106, elevations</span>
+        </div>
+        <div class="viewer__stage">
+          <div class="viewer__sheet cx-cropmarks" style="--cm:#9C968F">
+            <svg viewBox="0 0 380 250" role="img" aria-label="Elevation with detected cabinets, two B24 selected">
+              <line class="ink" x1="20" y1="214" x2="360" y2="214"/>
+              <line class="ink" x1="20" y1="34" x2="20" y2="214"/><line class="ink" x1="360" y1="34" x2="360" y2="214"/>
+              <rect class="ink" x="36" y="134" width="308" height="6"/>
+              <rect class="ink" x="36" y="50" width="70" height="56"/><line class="ink-l" x1="71" y1="50" x2="71" y2="106"/>
+              <rect class="ink" x="110" y="50" width="70" height="56"/><line class="ink-l" x1="145" y1="50" x2="145" y2="106"/>
+              <rect class="ink" x="238" y="50" width="35" height="56"/>
+              <rect class="ink" x="277" y="50" width="67" height="56"/><line class="ink-l" x1="310" y1="50" x2="310" y2="106"/>
+              <rect class="ink" x="36" y="142" width="48" height="66"/><line class="ink-l" x1="36" y1="158" x2="84" y2="158"/>
+              <rect class="ink" x="88" y="142" width="48" height="66"/><line class="ink-l" x1="88" y1="158" x2="136" y2="158"/>
+              <rect class="ink" x="140" y="142" width="72" height="66"/><line class="ink-l" x1="176" y1="142" x2="176" y2="208"/>
+              <rect class="ink" x="216" y="142" width="36" height="66"/><line class="ink-l" x1="216" y1="164" x2="252" y2="164"/><line class="ink-l" x1="216" y1="186" x2="252" y2="186"/>
+              <rect class="ink" x="256" y="142" width="88" height="66"/><line class="ink-l" x1="300" y1="142" x2="300" y2="208"/>
+              <line class="ink-l" x1="36" y1="230" x2="136" y2="230"/><text class="dim" x="74" y="240">4'-0"</text>
+              <rect class="det" x="33" y="47" width="76" height="62" rx="2"/><rect class="det" x="107" y="47" width="76" height="62" rx="2"/>
+              <rect class="det" x="235" y="47" width="41" height="62" rx="2"/><rect class="det" x="274" y="47" width="73" height="62" rx="2"/>
+              <rect class="det det--sel" x="33" y="139" width="54" height="72" rx="2"/><rect class="det det--sel" x="85" y="139" width="54" height="72" rx="2"/>
+              <rect class="det" x="137" y="139" width="78" height="72" rx="2"/><rect class="det det--flag" x="213" y="139" width="42" height="72" rx="2"/>
+              <rect class="det" x="253" y="139" width="94" height="72" rx="2"/>
+              <text class="lbl" x="36" y="42">W3030</text><text class="lbl" x="110" y="42">W3030</text><text class="lbl" x="236" y="42">W1530</text><text class="lbl" x="280" y="42">W3030</text>
+              <text class="lbl lbl--sel" x="36" y="222">B24</text><text class="lbl lbl--sel" x="88" y="222">B24</text><text class="lbl" x="140" y="222">B36</text><text class="lbl" x="214" y="222">DB18-3</text><text class="lbl" x="258" y="222">SB36</text>
+            </svg>
+          </div>
+          <div class="cx-toolpill viewer__tools" role="toolbar" aria-label="Sheet tools">
+            <button aria-label="Previous sheet">‹</button><span class="cx-toolpill__text">4 / 37</span><button aria-label="Next sheet">›</button>
+            <span class="cx-toolpill__sep"></span>
+            <button aria-label="Zoom out">−</button><span class="cx-toolpill__text">100%</span><button aria-label="Zoom in">+</button>
+          </div>
+        </div>
+        <div class="detail">
+          <p class="cx-eyebrow cx-eyebrow--muted">Selected</p>
+          <h3 class="cx-h3" style="margin-top:var(--space-2)">B24, base 1 door 1 drawer</h3>
+          <div class="detail__row">
+            <div><div class="detail__k">On this sheet</div><div class="detail__v">2</div></div>
+            <div><div class="detail__k">Total</div><div class="detail__v">18</div></div>
+            <div><div class="detail__k">Width</div><div class="detail__v">24″</div></div>
+          </div>
+          <div class="detail__actions">
+            <button class="cx-btn cx-btn--ink cx-btn--sm">Edit item</button>
+            <button class="cx-btn cx-btn--ghost cx-btn--sm">Next on sheet</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+/* Tailwind v4: import after tokens.css.
+   @import "tailwindcss"; @import "./tokens.css"; @import "./tailwind-v4.css";
+   Gives utilities like bg-surface, text-text-2, border-border, text-accent-text,
+   rounded-lg, font-mono — all bound to the COXIT tokens, so dark mode works
+   by switching data-theme on <html>. */
+
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-text-disabled: var(--text-disabled);
+
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-text: var(--accent-text);
+  --color-on-accent: var(--on-accent);
+  --color-accent-tint: var(--accent-tint);
+
+  --color-good: var(--good);   --color-good-tint: var(--good-tint);
+  --color-warn: var(--warn);   --color-warn-tint: var(--warn-tint);
+  --color-bad: var(--bad);     --color-bad-tint: var(--bad-tint);
+  --color-info: var(--info);   --color-info-tint: var(--info-tint);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  --color-on-flame: var(--on-flame);
+  --color-ink: var(--ink);
+  --color-ink-surface: var(--ink-surface);
+  --color-ink-text: var(--ink-text);
+  --color-ink-text-2: var(--ink-text-2);
+  --color-ink-text-3: var(--ink-text-3);
+  --color-ink-border: var(--ink-border);
+
+  --shadow-pop: var(--shadow-pop);
+}
+
+/* Gradients aren't theme colors in v4; use them as arbitrary values:
+   bg-[image:var(--gradient-flame)]  hover:bg-[image:var(--gradient-flame-hover)]
+   or these utilities: */
+@utility bg-flame { background-image: var(--gradient-flame); }
+@utility bg-corona { background-image: var(--gradient-corona); }

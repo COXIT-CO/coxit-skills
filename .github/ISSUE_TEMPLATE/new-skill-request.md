@@ -12,7 +12,7 @@ Proposed folder name (kebab-case):
 
 ## Target directory
 
-Where should this skill live? (e.g. `company-wide/`, `hr/`, `engineering/`)
+Where should this skill live? (e.g. `company-wide/`, `hr/`, `engineering/`, `design/`)
 
 ## Who uses it
 

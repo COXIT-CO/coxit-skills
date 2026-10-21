@@ -54,6 +54,7 @@ Most skills in this repo are still AI-generated starter drafts — they carry an
 - `hr/` — skills for HR
 - `recruitment/` — skills for recruitment
 - `engineering/` — skills for engineering
+- `design/` — design system and UI/UX standards for COXIT demos, apps, and HTML deliverables
 - `sales/` — skills for sales
 
 ## How to add or modify a skill
