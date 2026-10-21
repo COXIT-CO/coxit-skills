@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Standard repo setup: auto-delete merged branches, default `dev` branch,
+# Standard repo setup: squash-only merges, auto-delete merged branches, default `dev` branch,
 # identical protection on main/dev, and a required `require-dev-source` check on main.
 set -euo pipefail
 
@@ -11,6 +11,11 @@ echo "==> $REPO"
 
 echo "--> auto-delete head branches on merge"
 gh api -X PATCH "repos/$REPO" -F delete_branch_on_merge=true --jq '"delete_branch_on_merge=\(.delete_branch_on_merge)"'
+
+echo "--> squash and merge only"
+gh api -X PATCH "repos/$REPO" -F allow_squash_merge=true -F allow_merge_commit=false -F allow_rebase_merge=false \
+  -f squash_merge_commit_title=PR_TITLE -f squash_merge_commit_message=PR_BODY \
+  --jq '"squash=\(.allow_squash_merge) merge_commit=\(.allow_merge_commit) rebase=\(.allow_rebase_merge)"'
 
 echo "--> dev branch"
 if gh api "repos/$REPO/branches/dev" >/dev/null 2>&1; then

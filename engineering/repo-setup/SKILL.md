@@ -1,15 +1,19 @@
 ---
 name: repo-setup
-description: Set up a GitHub repo with the standard branch workflow — auto-delete merged branches, a protected `dev` branch as default, and `main` that only accepts PRs from `dev`. Use when the user asks to set up a new repo, configure branch protection, add a dev branch, or "apply our repo rules" to a repository.
+description: Set up a GitHub repo with the standard branch workflow — squash and merge only, auto-delete merged branches, a protected `dev` branch as default, and `main` that only accepts PRs from `dev`. Use when the user asks to set up a new repo, configure branch protection, add a dev branch, or "apply our repo rules" to a repository.
 ---
 
 # Repo setup
 
 Applies Coxit's standard GitHub branch workflow to a repository:
 
-1. **Auto-delete head branches** after a PR is merged.
-2. **`dev` branch** created from `main` and made the **default branch**.
-3. **Same branch protection on `main` and `dev`**:
+1. **Squash and merge only** (merge commits and rebase disabled), so it is the default
+   for PRs into `dev` and `main`; the squash commit uses the PR title and description.
+   GitHub merge methods are repo-wide and there is no "default" setting — allowing
+   only squash is how to make it the default.
+2. **Auto-delete head branches** after a PR is merged.
+3. **`dev` branch** created from `main` and made the **default branch**.
+4. **Same branch protection on `main` and `dev`**:
    - PR required, 1 approving review
    - stale approvals dismissed on new commits
    - approval required after the last push
@@ -17,7 +21,7 @@ Applies Coxit's standard GitHub branch workflow to a repository:
    - linear history
    - no force pushes, no deletions
    - admins not enforced (they can bypass)
-4. **`main` only accepts PRs from `dev`** — via the `require-dev-source` CI check
+5. **`main` only accepts PRs from `dev`** — via the `require-dev-source` CI check
    (`main-source-branch.yml`) set as a required status check on `main`.
    GitHub has no native "allowed source branch" setting, so a check is the way.
 
@@ -84,4 +88,6 @@ Tell the user what was applied, and point out:
 - Branch protection on **private** repos requires a paid plan (Pro/Team/Enterprise);
   on the free plan the API returns 403 — tell the user rather than retrying.
 - Changing the default branch doesn't retarget existing PRs.
-- With linear history required, `dev` → `main` PRs must be squash- or rebase-merged.
+- Squash-only means `dev` → `main` PRs are squashed too, so `main` gets one commit per
+  release and the merge base of `dev` and `main` never moves: later `dev` → `main` PRs
+  also list already-released commits and changes. Expected with this setup.
