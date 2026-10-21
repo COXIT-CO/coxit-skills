@@ -13,6 +13,6 @@
 ## Testing
 
 - [ ] Skill was manually tested by invoking it and confirming the output matches expectations.
-- [ ] Opened as a draft; marked ready only after self-review and a green `validate-skills` run.
+- [ ] Opened as a draft; author marked it ready only after self-review and a green `validate-skills` run.
 - [ ] One skill per PR (or scope justified in the summary).
 - [ ] Frontmatter starts with `---` and includes both `name:` and `description:`.

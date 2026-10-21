@@ -22,6 +22,7 @@ Produce the description as Markdown with these sections, in order. Use the headi
 One short paragraph (2–5 sentences). State the user-visible change first, then the implementation approach. Write so someone who hasn't read the diff can understand the intent.
 
 - Lead with the outcome, not the mechanism (*"Uploads to S3 now retry on transient 5xx"* beats *"Added a retry decorator to `upload`"*).
+- State the motivation — *why* this PR exists (e.g. *"lets us train a new ML model on the cleaned dataset"*, *"prepares the code infrastructure for feature X"*). If the why isn't clear from the diff, issue, or conversation, ask the user rather than guessing.
 - Reference the linked issue if one exists (`Closes #123`).
 
 ### What else do you need to know?
@@ -33,7 +34,7 @@ Anything that isn't obvious from the code: trade-offs considered, migrations req
 Include the checklist and tick the boxes the PR satisfies. Keep only the lines that apply to the project's stack; drop the rest.
 
 - [ ] Base branch is set to `main`
-- [ ] Opened as a draft PR first; converted to ready-for-review only after self-review and green CI
+- [ ] Opened as a draft PR first; author converted it to ready-for-review only after self-review and green CI
 - [ ] Pull request is prepared: assignee added, reviewers added, linked to issue
 - [ ] Version is bumped if the project uses versioning
   - Python: `uvx bump-my-version bump patch/minor/major`
@@ -59,7 +60,8 @@ Include the checklist and tick the boxes the PR satisfies. Keep only the lines t
 
 ## Guidance
 
-- **Always open as a draft first.** Create the PR with `gh pr create --draft` (or the "Create draft pull request" option in the UI). Self-review the diff, wait for CI, then mark it ready. This avoids pinging reviewers on a PR that's still cooking.
+- **Always create the PR as a draft.** Whatever tool opens it, the PR starts in draft so reviewers aren't pinged on a PR that's still cooking.
+- **The human author marks it ready for review — not Claude.** Moving out of draft is the author's sign-off that they've self-reviewed the diff and CI is green. Keeping that step with the human keeps responsibility for the PR with its author rather than shifting it to reviewers.
 - **Be honest on the checklist.** Don't tick *Tested manually* if you haven't. An unchecked box is a signal to the reviewer, not a failure.
 - **Size flag.** If the PR is over ~400 lines of real change, either split it or explicitly justify the size in *What else do you need to know?*
 - **Adapt to the stack.** Don't leave Python-specific items in a JS PR (or vice versa) — drop lines that don't apply to keep the checklist meaningful.

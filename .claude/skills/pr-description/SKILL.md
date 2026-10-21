@@ -27,7 +27,7 @@ Examples:
 
 ## Rules
 
-- **Always open as a draft first.** Use `gh pr create --draft` (or the "Create draft pull request" option in the UI). Mark it ready for review only after self-review and a green `validate-skills` run.
+- **Create the PR as a draft.** The human author — not Claude — marks it ready for review, only after self-review and a green `validate-skills` run.
 - **One skill per PR.** If the diff touches multiple skills, either split or justify it in the summary.
 - **CI must pass** (`validate-skills` workflow). Before pushing, check the frontmatter starts with `---` and has both `name:` and `description:`.
 - **Code owner auto-request.** Reviewers come from `.github/CODEOWNERS` based on which directory you changed.
